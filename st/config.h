@@ -6,7 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "firamono:size=10:antialias=true:autohint=true";
-static int borderpx = 4;
+static int borderpx = 2;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -108,7 +108,7 @@ static const char *colorname[] = {
 	/* 8 bright colors */
 	"#767676",
 	"#f2201f",
-	"#23fd00"
+	"#23fd00",
 	"#fffd00",
 	"#1a8fff",
 	"#fd28ff",
