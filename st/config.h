@@ -95,35 +95,34 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"#000000",
-	"#cc0403",
-	"#19cb00",
-	"#cecb00",
-	"#0d73cc",
-	"#cb1ed1",
-	"#0dcdcd",
-	"#dddddd",
+        /* 8 normal colors */
+        "#000000",
+        "#cc0403",
+        "#19cb00",
+        "#cecb00",
+        "#0d73cc",
+        "#cb1ed1",
+        "#0dcdcd",
+        "#dddddd",
 
-	/* 8 bright colors */
-	"#767676",
-	"#f2201f",
-	"#23fd00",
-	"#fffd00",
-	"#1a8fff",
-	"#fd28ff",
-	"#14ffff",
-	"#ffffff",
+        /* 8 bright colors */
+        "#767676",
+        "#f2201f",
+        "#23fd00",
+        "#fffd00",
+        "#1a8fff",
+        "#fd28ff",
+        "#14ffff",
+        "#ffffff",
 
-	[255] = 0,
+        [255] = 0,
 
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#555555",
-	"#ffffff", /* default foreground colour */
-	"#222222", /* default background colour */
+        /* more colors can be added after 255 to use with DefaultXX */
+        "#cccccc",
+        "#555555",
+        "#ffffff", /* default foreground colour */
+        "#222222", /* default background colour */
 };
-
 
 /*
  * Default colors (colorname index)
@@ -174,8 +173,11 @@ static uint forcemousemod = ShiftMask;
  * Internal mouse shortcuts.
  * Beware that overloading Button1 will disable the selection.
  */
+const unsigned int mousescrollincrement = 4;
 static MouseShortcut mshortcuts[] = {
 	/* mask                 button   function        argument       release */
+	{ XK_NO_MOD,            Button4, kscrollup,      {.i = mousescrollincrement} },
+	{ XK_NO_MOD,            Button5, kscrolldown,    {.i = mousescrollincrement} },
 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
 	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
@@ -201,6 +203,8 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
+	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
 };
 
 /*
