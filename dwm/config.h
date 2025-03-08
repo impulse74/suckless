@@ -19,7 +19,7 @@ static const char *colors[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "1", "2", "3", "4" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -58,9 +58,17 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char *volpluscmd[] = { "amixer", "set", "PCM", "5%+", NULL };
-static const char *voldowncmd[] = { "amixer", "set", "PCM", "5%-", NULL };
-static const char *volmutecmd[] = { "bash", "-c", "amixer get PCM | grep -q '\\[off\\]' && amixer set PCM unmute || amixer set PCM mute", NULL };
+static const char *volupcmd[] = { "bash", "-c", 
+    "amixer set PCM 5%+ && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
+    NULL };
+
+static const char *voldowncmd[] = { "bash", "-c", 
+    "amixer set PCM 5%- && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
+    NULL };
+
+static const char *volmutecmd[] = { "bash", "-c", 
+    "if amixer get PCM | grep -q '\\[off\\]'; then amixer set PCM unmute && notify-send -u low -t 1000 \"unmuted\"; else amixer set PCM mute && notify-send -u low -t 1000 \"muted\"; fi", 
+    NULL };
 
 #include <X11/XF86keysym.h>
 
@@ -68,7 +76,7 @@ static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ 0,             		XF86XK_AudioRaiseVolume,	 spawn,          {.v = volpluscmd } },
+	{ 0,             		XF86XK_AudioRaiseVolume,	 spawn,          {.v = volupcmd } },
 	{ 0,             		XF86XK_AudioLowerVolume,	 spawn,          {.v = voldowncmd } },
 	{ 0,                            XF86XK_AudioMute, 		 spawn,          {.v = volmutecmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
