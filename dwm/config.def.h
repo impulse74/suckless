@@ -1,17 +1,17 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "firacode:size=10" };
-static const char dmenufont[]       = "firacode:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char *fonts[]          = { "firacodenerdfont:size=10" };
+static const char dmenufont[]       = "firacodenerdfont:size=10";
+static const char col_gray1[]       = "#161616";
+static const char col_gray2[]       = "#282828";
+static const char col_gray3[]       = "#b6b8bb";
+static const char col_gray4[]       = "#f2f4f8";
+static const char col_cyan[]        = "#484848";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -33,7 +33,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
@@ -57,7 +57,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
+static const char *fmcmd[]  = { "pcmanfm", NULL };
 static const char *volupcmd[] = { "bash", "-c", 
     "amixer set PCM 5%+ && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
     NULL };
@@ -76,6 +77,7 @@ static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_e,	   spawn,          {.v = fmcmd } },
 	{ 0,             		XF86XK_AudioRaiseVolume,	 spawn,          {.v = volupcmd } },
 	{ 0,             		XF86XK_AudioLowerVolume,	 spawn,          {.v = voldowncmd } },
 	{ 0,                            XF86XK_AudioMute, 		 spawn,          {.v = volmutecmd } },
