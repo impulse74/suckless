@@ -7,11 +7,11 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "firacodenerdfont:size=10" };
 static const char dmenufont[]       = "firacodenerdfont:size=10";
-static const char col_gray1[]       = "#161616";
-static const char col_gray2[]       = "#282828";
-static const char col_gray3[]       = "#b6b8bb";
-static const char col_gray4[]       = "#f2f4f8";
-static const char col_cyan[]        = "#484848";
+static const char col_gray1[]       = "#222222";
+static const char col_gray2[]       = "#444444";
+static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray4[]       = "#eeeeee";
+static const char col_cyan[]        = "#005577";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -55,6 +55,7 @@ static const Layout layouts[] = {
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+/* ideally we would write most of this in c but i am too lazy for this */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
@@ -62,14 +63,13 @@ static const char *fmcmd[]  = { "pcmanfm", NULL };
 static const char *volupcmd[] = { "bash", "-c", 
     "amixer set PCM 5%+ && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
     NULL };
-
 static const char *voldowncmd[] = { "bash", "-c", 
     "amixer set PCM 5%- && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
     NULL };
-
 static const char *volmutecmd[] = { "bash", "-c", 
     "if amixer get PCM | grep -q '\\[off\\]'; then amixer set PCM unmute && notify-send -u low -t 1000 \"unmuted\"; else amixer set PCM mute && notify-send -u low -t 1000 \"muted\"; fi", 
     NULL };
+static const char *screenshotcmd[] = { "scrot", "-s" };
 
 #include <X11/XF86keysym.h>
 
@@ -78,9 +78,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_e,	   spawn,          {.v = fmcmd } },
-	{ 0,             		XF86XK_AudioRaiseVolume,	 spawn,          {.v = volupcmd } },
-	{ 0,             		XF86XK_AudioLowerVolume,	 spawn,          {.v = voldowncmd } },
-	{ 0,                            XF86XK_AudioMute, 		 spawn,          {.v = volmutecmd } },
+	{ 0,             		        XF86XK_AudioRaiseVolume,   spawn,  {.v = volupcmd } },
+	{ 0,             		        XF86XK_AudioLowerVolume,   spawn,  {.v = voldowncmd } },
+	{ 0,                            XF86XK_AudioMute, 		   spawn,          {.v = volmutecmd } },
+    { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = screenshotcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
