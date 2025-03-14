@@ -1,21 +1,22 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "firacodenerdfont:size=10" };
 static const char dmenufont[]       = "firacodenerdfont:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_gray1[]       = "#1f2329";  // Darker background (bg0)
+static const char col_gray2[]       = "#282c34";  // Secondary background (bg1)
+static const char col_gray3[]       = "#a0a8b7";  // Foreground text color (fg)
+static const char col_gray4[]       = "#1f2329";  // Darker accent (bg0)
+static const char col_cyan[]        = "#48b0bd";  // Cyan accent (cyan)
+
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
+	/*               fg         bg          border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeSel]  = { col_gray4, col_cyan, col_cyan  },
 };
 
 /* tagging */
@@ -46,10 +47,10 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -59,16 +60,17 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
+
 static const char *fmcmd[]  = { "pcmanfm", NULL };
 static const char *volupcmd[] = { "bash", "-c", 
-    "amixer set PCM 5%+ && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
-    NULL };
+	"amixer set PCM 5%+ && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
+	NULL };
 static const char *voldowncmd[] = { "bash", "-c", 
-    "amixer set PCM 5%- && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
-    NULL };
+	"amixer set PCM 5%- && VOL=$(amixer get PCM | grep -o '[0-9]*%' | head -n1 | tr -d '%') && notify-send -u low -t 1000 -h int:value:$VOL -r 9999 \"volume: $VOL%\"", 
+	NULL };
 static const char *volmutecmd[] = { "bash", "-c", 
-    "if amixer get PCM | grep -q '\\[off\\]'; then amixer set PCM unmute && notify-send -u low -t 1000 \"unmuted\"; else amixer set PCM mute && notify-send -u low -t 1000 \"muted\"; fi", 
-    NULL };
+	"if amixer get PCM | grep -q '\\[off\\]'; then amixer set PCM unmute && notify-send -u low -t 1000 \"unmuted\"; else amixer set PCM mute && notify-send -u low -t 1000 \"muted\"; fi", 
+	NULL };
 static const char *screenshotcmd[] = { "scrot", "-s" };
 
 #include <X11/XF86keysym.h>
@@ -78,10 +80,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_e,	   spawn,          {.v = fmcmd } },
-	{ 0,             		        XF86XK_AudioRaiseVolume,   spawn,  {.v = volupcmd } },
-	{ 0,             		        XF86XK_AudioLowerVolume,   spawn,  {.v = voldowncmd } },
-	{ 0,                            XF86XK_AudioMute, 		   spawn,          {.v = volmutecmd } },
-    { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = screenshotcmd } },
+	{ 0,             		XF86XK_AudioRaiseVolume,   spawn,  {.v = volupcmd } },
+	{ 0,             		XF86XK_AudioLowerVolume,   spawn,  {.v = voldowncmd } },
+	{ 0,                            XF86XK_AudioMute,          spawn,  {.v = volmutecmd } },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          {.v = screenshotcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },

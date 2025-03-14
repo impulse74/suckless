@@ -18,7 +18,7 @@
  *
  * Keys and tagging rules are organized as arrays and defined in config.h.
  *
- * To understand everything else, start reading 1main().
+ * To understand everything else, start reading main().
  */
 #include <locale.h>
 #include <signal.h>
@@ -706,9 +706,10 @@ drawbar(Monitor *m)
 	if (!m->showbar)
 		return;
 
-    drw_setscheme(drw, scheme[SchemeNorm]);
-    tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
-    drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
+	/* draw status first so it can be overdrawn by tags later */
+	drw_setscheme(drw, scheme[SchemeNorm]);
+	tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
+	drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
 
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
