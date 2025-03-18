@@ -1,0 +1,39 @@
+#!/bin/sh
+
+prev_status=""
+
+while true; do
+    # Get the current date and time
+    datetime=$(date +"%d.%m.%Y %H:%M:%S")
+
+    # Get volume level and mute status (faster way)
+    volume_info=$(amixer get PCM | awk -F'[][]' '/%/ {print $2, $4; exit}')
+    set -- $volume_info  # Split into positional parameters
+    volume=$1
+    [ "$2" = "off" ] && volume="mute"
+
+    # Get network interface (more reliable)
+    for iface in /sys/class/net/*; do
+        iface=$(basename "$iface")
+        [ "$iface" != "lo" ] && break
+    done
+    network_if=${iface:-"disconnected"}
+
+    # Get CPU load (1-minute average)
+    read -r cpu_load _ < /proc/loadavg
+
+    # Get memory usage (faster than free -m)
+    mem_used=$(awk '/MemAvailable/ {avail=$2} /MemTotal/ {total=$2} END {print int((total-avail)/1024) "mb"}' /proc/meminfo)
+
+    # Get battery status (if available)
+    battery="none"
+    [ -d "/sys/class/power_supply/BAT0" ] && battery=$(cat /sys/class/power_supply/BAT0/capacity)%
+
+    # Construct status string
+    status="$network_if | vol $volume | bat $battery | mem $mem_used | $datetime"
+
+    # Update only if changed
+    [ "$status" != "$prev_status" ] && xsetroot -name "$status" && prev_status="$status"
+
+    sleep 1
+done

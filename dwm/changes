@@ -1,0 +1,20 @@
+aside from the obvious changes in config.h there is:
+1. cursors warps to focused client and or monitor
+2. new floating windows are centered
+3. every pixel is drawn opaque (see drw.c line 183)
+    the reason for this, is that compositors like picom add transparency
+    and dwm doesn't set transparency by default so sometimes your window borders
+    can render transparent if you want transparency remove that line
+4. the color scheme of the background where client name is drawn is set to the normal scheme
+5. status text is drawn and updated on all monitors not just primary
+6. the config.def.h file is completely removed and instead config.h is used for everything
+7. patched pertag so every tag has its own layout, nmaster, mfact and so on
+
+there are also executable bash scripts (screenshot, volcontrol, statusbar)
+which are self explanatory, they are installed alongside dwm in /usr/local/bin
+they are bound to keys in config.h except statusbar which should be run in your .xinitrc
+
+todo:
+opening a client opens it on the primary monitor no matter the focused monitor (which it was opened on)
+i have tried to implement this but it is quite tricky
+

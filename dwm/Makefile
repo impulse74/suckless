@@ -5,6 +5,7 @@ include config.mk
 
 SRC = drw.c dwm.c util.c
 OBJ = ${SRC:.c=.o}
+UTILS = volcontrol screenshot statusbar
 
 all: dwm
 
@@ -12,9 +13,6 @@ all: dwm
 	${CC} -c ${CFLAGS} $<
 
 ${OBJ}: config.h config.mk
-
-config.h:
-	cp config.def.h $@
 
 dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
@@ -24,8 +22,7 @@ clean:
 
 dist: clean
 	mkdir -p dwm-${VERSION}
-	cp -R LICENSE Makefile README config.def.h config.mk\
-		dwm.1 drw.h util.h ${SRC} dwm.png transient.c dwm-${VERSION}
+	cp -R Makefile config.h config.mk dwm.1 drw.h util.h ${SRC} dwm.png transient.c dwm-${VERSION}
 	tar -cf dwm-${VERSION}.tar dwm-${VERSION}
 	gzip dwm-${VERSION}.tar
 	rm -rf dwm-${VERSION}
@@ -38,8 +35,17 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 
+	# Install utils
+	mkdir -p ${DESTDIR}${PREFIX}/bin
+	cp -f ${UTILS} ${DESTDIR}${PREFIX}/bin/
+	chmod 755 ${addprefix ${DESTDIR}${PREFIX}/bin/, ${UTILS}}
+
 uninstall:
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
+	rm -f ${DESTDIR}${PREFIX}/bin/dwm \
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
+	# Uninstall utils
+	rm -f ${addprefix ${DESTDIR}${PREFIX}/bin/, ${UTILS}}
+
 .PHONY: all clean dist install uninstall
+
