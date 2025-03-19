@@ -63,7 +63,7 @@ static const char *fmcmd[]  = { "pcmanfm", NULL };
 static const char *volupcmd[] = { "volcontrol", "up", NULL };
 static const char *voldwncmd[] = { "volcontrol", "down", NULL };
 static const char *volmutecmd[] = { "volcontrol", "toggle", NULL };
-static const char *screenshotcmd[] = { "screenshot", "s" };
+static const char *screenshotcmd[] = { "screenshot", "s", NULL };
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -104,7 +104,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
     { 0,             	        	XF86XK_AudioRaiseVolume,   spawn,  {.v = volupcmd } },
     { 0,             		        XF86XK_AudioLowerVolume,   spawn,  {.v = voldwncmd } },
-    { 0,                            XF86XK_AudioMute,  spawn,  {.v = volmutecmd } },
+    { 0,                            XF86XK_AudioMute,          spawn,  {.v = volmutecmd } },
 };
 
 /* button definitions */

@@ -25,10 +25,10 @@ case "$1" in
     toggle)
         if amixer get "$VOLUME_CONTROL" | grep -q '\[off\]'; then
             amixer set "$VOLUME_CONTROL" unmute > /dev/null
-            notify-send -u low -t 1000 "unmuted"
+            notify-send -t 1000 "unmuted"
         else
             amixer set "$VOLUME_CONTROL" mute > /dev/null
-            notify-send -u low -t 1000 "muted"
+            notify-send -t 1000 "muted"
         fi
         ;;
     *)

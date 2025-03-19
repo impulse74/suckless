@@ -8,11 +8,13 @@ aside from the obvious changes in config.h there is:
 4. the color scheme of the background where client name is drawn is set to the normal scheme
 5. status text is drawn and updated on all monitors not just primary
 6. patched pertag so every tag has its own layout, nmaster, mfact and so on
+7. patched preserveonrestart so that restarting does put every client on tag 1
 
-there are also bash scripts (screenshot, volcontrol, statusbar)
+there are also bash scripts (screenshot, volcontrol, kblayoutswitch, statusbar, quitdwm)
 which are self explanatory, they are installed alongside dwm
 they are bound to keys in config.h
 except statusbar which should be run in your .xinitrc
+and quitdwm which quits dwm because super+shift+q only restarts it
 
 todo:
 opening a client opens it on the primary monitor no matter the focused monitor
