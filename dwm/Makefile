@@ -44,6 +44,8 @@ install: all
 	chmod 755 ${DESTDIR}${PREFIX}/bin/screenshot
 	cp -f quitdwm ${DESTDIR}${PREFIX}/bin
 	chmod 755 ${DESTDIR}${PREFIX}/bin/quitdwm
+	cp -f statusbar ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/statusbar
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
@@ -52,5 +54,6 @@ uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/volcontrol
 	rm -f ${DESTDIR}${PREFIX}/bin/screenshot
 	rm -f ${DESTDIR}${PREFIX}/bin/quitdwm
+	rm -f ${DESTDIR}${PREFIX}/bin/statusbar
 
 .PHONY: all clean dist install uninstall

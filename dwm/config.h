@@ -64,6 +64,12 @@ static const char *volupcmd[] = { "volcontrol", "up", NULL };
 static const char *voldwncmd[] = { "volcontrol", "down", NULL };
 static const char *volmutecmd[] = { "volcontrol", "toggle", NULL };
 static const char *screenshotcmd[] = { "screenshot", "s", NULL };
+static const char *quitcmd[] = { "killall", "-p", "dwm", NULL };
+static const char *xkbcmd[] = { 
+    "sh", "-c", 
+    "setxkbmap -query | grep -q 'layout:.*us' && setxkbmap sk -variant qwerty || setxkbmap us", 
+    NULL 
+};
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -71,6 +77,7 @@ static const Key keys[] = {
     { MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
     { MODKEY|ShiftMask,             XK_e,	   spawn,          {.v = fmcmd } },
     { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = screenshotcmd } },
+    { MODKEY,                       XK_w,      spawn,          {.v = xkbcmd } },
     { MODKEY,                       XK_b,      togglebar,      {0} },
     { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
     { MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -101,7 +108,8 @@ static const Key keys[] = {
     TAGKEYS(                        XK_7,                      6)
     TAGKEYS(                        XK_8,                      7)
     TAGKEYS(                        XK_9,                      8)
-    { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+    { MODKEY|ShiftMask,             XK_q,      spawn,          {.v = quitcmd } }, /* this quits dwm */
+    { MODKEY|ShiftMask,             XK_r,      quit,           {0} }, /* this only restarts it */
     { 0,             	        	XF86XK_AudioRaiseVolume,   spawn,  {.v = volupcmd } },
     { 0,             		        XF86XK_AudioLowerVolume,   spawn,  {.v = voldwncmd } },
     { 0,                            XF86XK_AudioMute,          spawn,  {.v = volmutecmd } },

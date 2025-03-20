@@ -10,11 +10,10 @@ aside from the obvious changes in config.h there is:
 6. patched pertag so every tag has its own layout, nmaster, mfact and so on
 7. patched preserveonrestart so that restarting does put every client on tag 1
 
-there are also bash scripts (screenshot, volcontrol, quitdwm)
+there are also bash scripts (screenshot, volcontrol, statusbar)
 which are self explanatory, they are installed alongside dwm
 they are bound to keys in config.h
 except statusbar which should be run in your .xinitrc
-and quitdwm which quits dwm because super+shift+q only restarts it
 
 todo:
 opening a client opens it on the primary monitor no matter the focused monitor
