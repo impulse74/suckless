@@ -60,10 +60,10 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *fmcmd[]  = { "pcmanfm", NULL };
-static const char *volupcmd[] = { "volcontrol", "up", NULL };
-static const char *voldwncmd[] = { "volcontrol", "down", NULL };
-static const char *volmutecmd[] = { "volcontrol", "toggle", NULL };
-static const char *screenshotcmd[] = { "screenshot", "s", NULL };
+static const char *volupcmd[] = { "volcontrol.sh", "up", NULL };
+static const char *voldwncmd[] = { "volcontrol.sh", "down", NULL };
+static const char *volmutecmd[] = { "volcontrol.sh", "toggle", NULL };
+static const char *screenshotcmd[] = { "screenshot.sh", "s", NULL };
 static const char *quitcmd[] = { "killall", "-p", "dwm", NULL };
 static const char *xkbcmd[] = { 
     "sh", "-c", 

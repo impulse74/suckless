@@ -38,22 +38,19 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	# Install additional scripts
-	cp -f volcontrol ${DESTDIR}${PREFIX}/bin
-	chmod 755 ${DESTDIR}${PREFIX}/bin/volcontrol
-	cp -f screenshot ${DESTDIR}${PREFIX}/bin
-	chmod 755 ${DESTDIR}${PREFIX}/bin/screenshot
-	cp -f quitdwm ${DESTDIR}${PREFIX}/bin
-	chmod 755 ${DESTDIR}${PREFIX}/bin/quitdwm
-	cp -f statusbar ${DESTDIR}${PREFIX}/bin
-	chmod 755 ${DESTDIR}${PREFIX}/bin/statusbar
+	cp -f volcontrol.sh ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/volcontrol.sh
+	cp -f screenshot.sh ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/screenshot.sh
+	cp -f statusbar.sh ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/statusbar.sh
 
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 	# Uninstall additional scripts
-	rm -f ${DESTDIR}${PREFIX}/bin/volcontrol
-	rm -f ${DESTDIR}${PREFIX}/bin/screenshot
-	rm -f ${DESTDIR}${PREFIX}/bin/quitdwm
-	rm -f ${DESTDIR}${PREFIX}/bin/statusbar
+	rm -f ${DESTDIR}${PREFIX}/bin/volcontrol.sh
+	rm -f ${DESTDIR}${PREFIX}/bin/screenshot.sh
+	rm -f ${DESTDIR}${PREFIX}/bin/statusbar.sh
 
 .PHONY: all clean dist install uninstall

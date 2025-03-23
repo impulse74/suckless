@@ -7,8 +7,8 @@ while true; do
     datetime=$(date +"%d.%m.%Y %H:%M:%S")
 
     # Get volume level and mute status
-    volume_info=$(amixer get PCM | awk -F'[][]' '/%/ {print $2; exit}')
-    if amixer get PCM | grep -q '\[off\]'; then
+    volume_info=$(amixer get Master | awk -F'[][]' '/%/ {print $2; exit}')
+    if amixer get Master | grep -q '\[off\]'; then
         volume="mute"
     else
         volume="$volume_info"
@@ -16,13 +16,17 @@ while true; do
 
     # Get network status
     network_if=$(ip route show default | awk 'NR==1 {print $5}')
-    network_if=${network_if:-"disconnected"}
+    network_status=""
+
+    if [ -z "$network_if" ]; then
+        network_status=" disconnected |"
+    fi
 
     # Get the current keyboard layout
     layout=$(setxkbmap -query | grep layout | awk '{print $2}')
 
     # Construct status string
-    status=" $layout | $network_if | vol $volume | $datetime"
+    status="${network_status} $layout | vol $volume | $datetime"
 
     # Update only if changed
     if [ "$status" != "$prev_status" ]; then

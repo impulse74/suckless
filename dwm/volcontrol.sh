@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VOLUME_STEP=5
-VOLUME_CONTROL="PCM"
+VOLUME_CONTROL="Master"
 NOTIFY_ID=9999
 
 get_volume() {
