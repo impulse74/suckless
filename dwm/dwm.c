@@ -759,8 +759,8 @@ drawbar(Monitor *m)
 
 	if ((w = m->ww - tw - x) > bh) {
 		if (m->sel) {
-			// drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
-			drw_setscheme(drw, scheme[SchemeNorm]);
+			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+			//drw_setscheme(drw, scheme[SchemeNorm]);
 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
 			if (m->sel->isfloating)
 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
@@ -857,18 +857,6 @@ focusmon(const Arg *arg)
 	unfocus(selmon->sel, 0);
 	selmon = m;
 	focus(NULL);
-    
-    /* If a window is selected, center the cursor in it */
-	if (selmon->sel) {
-		XWarpPointer(dpy, None, selmon->sel->win, 
-                     0, 0, 0, 0, 
-                     selmon->sel->w / 2, selmon->sel->h / 2);
-	} else {
-		/* Otherwise, center the cursor on the monitor */
-		XWarpPointer(dpy, None, RootWindow(dpy, DefaultScreen(dpy)), 
-                     0, 0, 0, 0, 
-                     selmon->wx + selmon->ww / 2, selmon->wy + selmon->wh / 2);
-	}
 }
 
 void
@@ -894,7 +882,6 @@ focusstack(const Arg *arg)
 	if (c) {
 		focus(c);
 		restack(selmon);
-        XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 	}
 }
 
@@ -1143,8 +1130,6 @@ manage(Window w, XWindowAttributes *wa)
 	c->mon->sel = c;
 	arrange(c->mon);
 	XMapWindow(dpy, c->win);
-    if (c && c->mon == selmon)
-		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
 	focus(NULL);
 }
 
@@ -1898,9 +1883,6 @@ unmanage(Client *c, int destroyed)
 	focus(NULL);
 	updateclientlist();
 	arrange(m);
-    if (m == selmon && m->sel)
-		XWarpPointer(dpy, None, m->sel->win, 0, 0, 0, 0,
-		             m->sel->w/2, m->sel->h/2);
 }
 
 void
